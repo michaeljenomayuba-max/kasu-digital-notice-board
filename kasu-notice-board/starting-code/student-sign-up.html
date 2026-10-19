@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Sign Up | KASU Notice Board</title>
+    <link rel="stylesheet" href="styles/student-sign-up.css" />
+  </head>
+  <body>
+    <main class="page">
+      <div class="auth-card">
+        <div class="logo-container">
+          <img class="logo" src="images/kasu-logo.png" alt="KASU logo" />
+        </div>
+        <p class="welcome-text">Welcome to the KASU Notice Board</p>
+        <h1 class="auth-title">Sign up</h1>
+        <form class="auth-form" action="feed.html">
+          <div class="form-group">
+            <label for="matric-number">Matric number</label>
+            <input
+              type="text"
+              id="matric-number"
+              name="matric-number"
+              placeholder="KASU/YY/DEPT/NN"
+            />
+          </div>
+          <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" placeholder="Email" />
+          </div>
+          <div class="form-group">
+            <label for="password">Password</label>
+            <input
+              type="password"
+              id="password"
+              name="password"
+              placeholder="Password"
+            />
+          </div>
+          <div class="form-group">
+            <label for="confirm-password">Confirm password</label>
+            <input
+              type="password"
+              id="confirm-password"
+              name="confirm-password"
+              placeholder="Confirm password"
+            />
+          </div>
+          <button class="auth-button" type="submit">Sign up</button>
+        </form>
+        <p class="auth-switch">
+          Already have an account? <a href="student-sign-in.html">Sign in</a>
+        </p>
+      </div>
+    </main>
+  </body>
+</html>
