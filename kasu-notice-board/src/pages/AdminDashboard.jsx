@@ -1,9 +1,28 @@
+import { useState } from 'react';
 import { Link } from 'react-router';
 import { Header } from './Header';
 import './AdminDashboard.css';
 import "../index.css";
 
 export function AdminDashboard() {
+  const [category, setCategory] = useState("");
+  const [title, setTitle] = useState("");
+  const [body, setBody] = useState("");
+  const [imageUrl, setImageUrl] = useState("");
+  const [urgent, setUrgent] = useState(false);
+  const [formError, setFormError] = useState(null);
+
+  const createPost = async (e) => {
+    e.preventDefault();
+
+    if (!category || !body || !title) {
+      setFormError("Please fill in all the fields");
+      return;
+    }
+
+    console.log(category, title, body, imageUrl, urgent);
+  }
+
   return (
     <>
       <title>Admin Dashboard | KASU Notice Board</title>
@@ -12,11 +31,11 @@ export function AdminDashboard() {
 
       <main className="page">
         <div className="create-post-container">
-          <form className="create-post-form">
+          <form className="create-post-form" onSubmit={createPost}>
             <div className="category-picker">
               <p className="category-picker-label">Category</p>
               <label className="radio-option">
-                <input type="radio" name="category" value="general" checked />
+                <input type="radio" name="category" value="general" />
                 General
               </label>
               <label className="radio-option">
@@ -31,6 +50,8 @@ export function AdminDashboard() {
                 className="new-category-input"
                 type="text"
                 name="new-category"
+                value={category}
+                onChange={(e) => setCategory(e.target.value)}
                 placeholder="New category name"
                 aria-label="New category name"
               />
@@ -45,6 +66,8 @@ export function AdminDashboard() {
                 type="text"
                 id="notice-title"
                 name="notice-title"
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
                 placeholder="Notice title"
               />
             </div>
@@ -53,6 +76,8 @@ export function AdminDashboard() {
               <textarea
                 id="notice-body"
                 name="notice-body"
+                value={body}
+                onChange={(e) => setBody(e.target.value)}
                 placeholder="Write the notice here"
               ></textarea>
             </div>
@@ -62,11 +87,18 @@ export function AdminDashboard() {
                 type="file"
                 id="notice-image"
                 name="notice-image"
+                value={imageUrl}
+                onChange={(e) => setImageUrl(e.target.value)}
                 accept="image/*"
               />
             </div>
             <label className="checkbox-option">
-              <input type="checkbox" name="urgent" />
+              <input
+               type="checkbox"
+               name="urgent"
+               onChange={(e) => setUrgent(e.target.checked)}
+               value={urgent}
+              />
               Mark notice as urgent
             </label>
             <div className="button-row">
@@ -77,6 +109,8 @@ export function AdminDashboard() {
                 View all posts
               </Link>
             </div>
+
+            {formError && <p>{formError}</p>}
           </form>
         </div>
       </main>

@@ -12,7 +12,7 @@ function App() {
       <Route path="feed" element={<FeedPage />} />
       <Route path="notice" element={<NoticePage />} />
     </Routes>
-  )
+  );
 }
 
 export default App
