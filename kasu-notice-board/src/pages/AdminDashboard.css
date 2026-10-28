@@ -27,8 +27,13 @@
   margin: 0;
   font-weight: 700;
 }
+
+.radio-option{
+  justify-content: space-between;
+}
+
 .radio-option,
-.checkbox-option {
+.checkbox-option, .created-category {
   display: flex;
   align-items: center;
   gap: 12px;

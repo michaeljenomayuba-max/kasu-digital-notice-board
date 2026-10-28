@@ -1,5 +1,7 @@
 import dayjs from 'dayjs';
 import { Link } from "react-router";
+import EditIcon from "../../assets/images/edit-icon.png"
+import DeleteIcon from "../../assets/images/delete-icon.png"
 
 export function NoticeCard({notices}) {
   return (
@@ -20,9 +22,21 @@ export function NoticeCard({notices}) {
               </div>
             </div>
             <p className="notice-text">{notice.body}</p>
-            <Link className="view-more-button" to="/notice">
-              View more
-            </Link>
+            <div className="buttons-container">
+              <Link className="view-more-button" to="/notice">
+                View more
+              </Link>
+
+              <div className="update-buttons-container">
+                <Link className="edit-icon-button" to="/notice">
+                  <img className="edit-icon" src={EditIcon} />
+                </Link>
+                
+                <Link className="delete-icon-button" to="/notice">
+                  <img className="delete-icon" src={DeleteIcon} />
+                </Link>
+              </div>
+            </div>
           </div>
         );
       })}

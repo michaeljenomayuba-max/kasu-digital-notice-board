@@ -15,3 +15,41 @@ body {
   margin: 0 auto;
   padding: 20px 16px 40px;
 }
+
+.buttons-container{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.update-buttons-container{
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.edit-icon, .delete-icon{
+  width: 25px;
+  height: 25px;
+  display: block;
+}
+
+
+.edit-icon-button, .delete-icon-button{
+  width: 40px;
+  height: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+}
+
+.edit-icon-button:hover{
+  background-color: #3e5a4975;
+}
+
+.delete-icon-button:hover{
+  background-color: rgba(239, 81, 81, 0.425);
+}

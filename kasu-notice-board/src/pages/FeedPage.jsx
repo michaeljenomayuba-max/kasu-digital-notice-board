@@ -1,6 +1,7 @@
 import { Header } from "./Header";
 import { supabase } from "../assets/lib/supabaseClient";
 import { NoticeCard } from "./components/NoticeCard";
+import { FeedCategories } from "./components/FeedCategories";
 import { useState, useEffect } from "react";
 import "./Feed.css";
 import "../index.css";
@@ -8,8 +9,18 @@ import "../index.css";
 export function FeedPage() {
   const [fetchError, setFetchError] = useState(null);
   const [notices, setNotices] = useState([]);
+  const [categories, setCategories] = useState([]);
 
   useEffect(() => {
+    const fetchCategories = async () => {
+      const {data} = await supabase
+        .from('categories')
+        .select();
+
+      
+      setCategories(data);
+    };
+
     const fetchNotices = async () => {
       const { data, error } = await supabase
         .from('notices')
@@ -28,6 +39,7 @@ export function FeedPage() {
     };
 
     fetchNotices();
+    fetchCategories();
   }, []);
 
   return (
@@ -37,20 +49,9 @@ export function FeedPage() {
       <Header />
 
       <main className="page">
-        <div className="categories-container">
-          <button className="category-button category-button-active" type="button">
-            All
-          </button>
-          <button className="category-button" type="button">
-            General
-          </button>
-          <button className="category-button" type="button">
-            NELFUND
-          </button>
-          <button className="category-button" type="button">
-            Entertainment
-          </button>
-        </div>
+
+        <FeedCategories categories={categories} />
+        
         {fetchError && (
           <p>
             We're experiencing some technical issues please refresh the page or

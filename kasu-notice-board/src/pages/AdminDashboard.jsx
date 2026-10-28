@@ -1,16 +1,22 @@
 import { useState } from 'react';
-import { Link } from 'react-router';
+import { supabase } from '../assets/lib/supabaseClient';
+import { Link, useNavigate } from 'react-router';
 import { Header } from './Header';
+import {CreateCategories} from './components/CreateCategories';
 import './AdminDashboard.css';
 import "../index.css";
 
 export function AdminDashboard() {
+  const navigate = useNavigate();
+
   const [category, setCategory] = useState("");
   const [title, setTitle] = useState("");
   const [body, setBody] = useState("");
   const [imageUrl, setImageUrl] = useState("");
   const [urgent, setUrgent] = useState(false);
   const [formError, setFormError] = useState(null);
+
+  
 
   const createPost = async (e) => {
     e.preventDefault();
@@ -20,7 +26,20 @@ export function AdminDashboard() {
       return;
     }
 
-    console.log(category, title, body, imageUrl, urgent);
+    const {data, error} = await supabase
+      .from('notices')
+      .insert([{category_id: category, title, body, urgent, image_url: imageUrl}])
+      .select();
+
+     if (error) {
+      setFormError("Please fill in all necessary fields: category title and body")
+     } 
+
+    if (data) {
+      setFormError(null)
+      navigate('/feed');
+     } 
+
   }
 
   return (
@@ -31,34 +50,10 @@ export function AdminDashboard() {
 
       <main className="page">
         <div className="create-post-container">
+          
           <form className="create-post-form" onSubmit={createPost}>
-            <div className="category-picker">
-              <p className="category-picker-label">Category</p>
-              <label className="radio-option">
-                <input type="radio" name="category" value="general" />
-                General
-              </label>
-              <label className="radio-option">
-                <input type="radio" name="category" value="nelfund" />
-                NELFUND
-              </label>
-              <label className="radio-option">
-                <input type="radio" name="category" value="entertainment" />
-                Entertainment
-              </label>
-              <input
-                className="new-category-input"
-                type="text"
-                name="new-category"
-                value={category}
-                onChange={(e) => setCategory(e.target.value)}
-                placeholder="New category name"
-                aria-label="New category name"
-              />
-              <button className="create-category-button" type="button">
-                Create Category
-              </button>
-            </div>
+
+            <CreateCategories setCategory={setCategory} />
 
             <div className="form-group">
               <label for="notice-title">Notice title</label>
@@ -116,4 +111,4 @@ export function AdminDashboard() {
       </main>
     </>
   );
-}
+};
