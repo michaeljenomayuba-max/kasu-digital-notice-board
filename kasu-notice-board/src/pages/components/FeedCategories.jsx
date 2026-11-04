@@ -6,7 +6,7 @@ export function FeedCategories({categories}) {
       </button>
       {categories.map((category) => {
         return (
-          <button className="category-button" type="button">
+          <button key={category.id} className="category-button" type="button">
             {category.name}
           </button>
         )

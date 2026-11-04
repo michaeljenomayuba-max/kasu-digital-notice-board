@@ -1,8 +1,9 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '../../assets/lib/supabaseClient';
+import { updateDelete } from '../../utils';
 import DeleteIcon from "../../assets/images/delete-icon.png";
 
-export function CreateCategories({setCategory}) {
+export function CreateCategories({category, setCategory}) {
   const [categories, setCategories] = useState([]);
     const [newCategory, setNewCategory] = useState("");
   
@@ -32,26 +33,42 @@ export function CreateCategories({setCategory}) {
         .insert([{name: newCategory}])
         .select();
 
+      setCategories([...categories, data[0]])
+      setNewCategory("")
       setFillCategory(null);
     }  
+  }
+
+  const deleteCategory = async (categoryId) => {
+    await supabase
+      .from('notices')
+      .delete()
+      .eq('category_id', categoryId)
+
+    await supabase
+      .from('categories')
+      .delete()
+      .eq('id', categoryId)
+
+    setCategories(updateDelete(categoryId, categories))
   }
 
   return (
     <div className="category-picker">
       <p className="category-picker-label">Category</p>
-      {categories.map((category) => {
+      {categories.map((cat) => {
         return (
           <label
-            key={category.id}
+            key={cat.id}
             className="radio-option"
             onChange={(e) => setCategory(e.target.value)}
           >
             <div className="created-category">
-              <input type="radio" name="category" value={category.id} />
-              {category.name}
+              <input type="radio" name="category" value={cat.id} checked={category === cat.id} onChange={() => setCategory(cat.id)}/>
+              {cat.name}
             </div>
 
-            <button className="delete-icon-button">
+            <button type='button' className="delete-icon-button" onClick={() => {deleteCategory(cat.id)}}>
               <img className="delete-icon" src={DeleteIcon} />
             </button>
           </label>

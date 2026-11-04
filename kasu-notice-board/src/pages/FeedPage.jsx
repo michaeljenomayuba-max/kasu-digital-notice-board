@@ -26,7 +26,8 @@ export function FeedPage() {
         .from('notices')
         .select(`*,
           categories(name)
-          `);
+          `)
+        .order('created_at', { ascending: false })
 
       if (error) {
         setFetchError("unable to fetch notices");
@@ -61,7 +62,7 @@ export function FeedPage() {
           </p>
         )}   
 
-        <NoticeCard notices={notices} />
+        <NoticeCard notices={notices} setNotices={setNotices} />
       </main>
     </>
   );

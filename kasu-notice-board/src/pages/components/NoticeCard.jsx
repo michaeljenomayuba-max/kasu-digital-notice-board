@@ -1,9 +1,20 @@
 import dayjs from 'dayjs';
+import { supabase } from '../../assets/lib/supabaseClient';
 import { Link } from "react-router";
-import EditIcon from "../../assets/images/edit-icon.png"
-import DeleteIcon from "../../assets/images/delete-icon.png"
+import { updateDelete } from '../../utils';
+import EditIcon from "../../assets/images/edit-icon.png";
+import DeleteIcon from "../../assets/images/delete-icon.png";
 
-export function NoticeCard({notices}) {
+export function NoticeCard({notices, setNotices}) {
+  const deletePost = async (noticeId) => {
+    const {data, error} = await supabase
+      .from('notices')
+      .delete()
+      .eq('id', noticeId)
+
+    setNotices(updateDelete(noticeId, notices))
+  }
+
   return (
     <div className="notice-list">
       {notices.map((notice) => {
@@ -28,13 +39,13 @@ export function NoticeCard({notices}) {
               </Link>
 
               <div className="update-buttons-container">
-                <Link className="edit-icon-button" to="/notice">
+                <Link className="edit-icon-button" to={`/${notice.id}`}>
                   <img className="edit-icon" src={EditIcon} />
                 </Link>
                 
-                <Link className="delete-icon-button" to="/notice">
+                <button type='button' className="delete-icon-button" onClick={() => {deletePost(notice.id)}} >
                   <img className="delete-icon" src={DeleteIcon} />
-                </Link>
+                </button>
               </div>
             </div>
           </div>

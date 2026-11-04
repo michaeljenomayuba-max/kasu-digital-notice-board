@@ -8,9 +8,10 @@ function App() {
 
   return (
     <Routes>
-      <Route index element={<AdminDashboard />} />
+      <Route index element={<AdminDashboard key="new" />} />
       <Route path="feed" element={<FeedPage />} />
       <Route path="notice" element={<NoticePage />} />
+      <Route path="/:noticeId" element={<AdminDashboard key="edit" />} />
     </Routes>
   );
 }
