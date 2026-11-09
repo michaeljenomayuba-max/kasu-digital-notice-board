@@ -14,7 +14,7 @@ export function AdminDashboard() {
   const [category, setCategory] = useState("");
   const [title, setTitle] = useState("");
   const [body, setBody] = useState("");
-  const [imageUrl, setImageUrl] = useState("");
+  const [imageFile, setImageFile] = useState(null);
   const [urgent, setUrgent] = useState(false);
   const [formError, setFormError] = useState(null);
 
@@ -50,6 +50,20 @@ export function AdminDashboard() {
       return;
     }
 
+    let imageAddress = null;
+
+    if (imageFile) {
+      const fileName = `${Date.now()}-${imageFile.name}`;
+
+      await supabase.storage.from("notice-images").upload(fileName, imageFile);
+
+      const { data: urlData } = supabase.storage
+        .from("notice-images")
+        .getPublicUrl(fileName);
+
+      imageAddress = urlData.publicUrl;
+    }
+
     const fields = { category_id: category, title, body, urgent };
 
     const { data, error } = isEditing
@@ -61,7 +75,7 @@ export function AdminDashboard() {
       : await supabase
           .from("notices")
           .insert([
-            { category_id: category, title, body, urgent, image_url: imageUrl },
+            { category_id: category, title, body, urgent, image_url: imageAddress },
           ])
           .select();
 
@@ -75,6 +89,7 @@ export function AdminDashboard() {
       setFormError(null);
       navigate("/feed");
     }
+
   };
 
   return (
@@ -115,8 +130,7 @@ export function AdminDashboard() {
                 type="file"
                 id="notice-image"
                 name="notice-image"
-                value={imageUrl}
-                onChange={(e) => setImageUrl(e.target.value)}
+                onChange={(e) => setImageFile(e.target.files[0])}
                 accept="image/*"
               />
             </div>
@@ -131,7 +145,7 @@ export function AdminDashboard() {
             </label>
             <div className="button-row">
               <button className="post-button" type="submit">
-                {isEditing ? 'Save Post' : "Post"}
+                {isEditing ? "Save Post" : "Post"}
               </button>
               <Link className="view-all-posts-button" to="/feed">
                 View all posts

@@ -10,24 +10,25 @@ export function FeedPage() {
   const [fetchError, setFetchError] = useState(null);
   const [notices, setNotices] = useState([]);
   const [categories, setCategories] = useState([]);
+  const [selectedCategory, setSelectedCategory] = useState("All");
+  const [searchText, setSearchText] = useState("");
 
   useEffect(() => {
     const fetchCategories = async () => {
-      const {data} = await supabase
-        .from('categories')
-        .select();
+      const { data } = await supabase.from("categories").select();
 
-      
       setCategories(data);
     };
 
     const fetchNotices = async () => {
       const { data, error } = await supabase
-        .from('notices')
-        .select(`*,
+        .from("notices")
+        .select(
+          `*,
           categories(name)
-          `)
-        .order('created_at', { ascending: false })
+          `,
+        )
+        .order("created_at", { ascending: false });
 
       if (error) {
         setFetchError("unable to fetch notices");
@@ -43,16 +44,30 @@ export function FeedPage() {
     fetchCategories();
   }, []);
 
+
+  const visibleNotices = notices.filter((notice) => {
+    const categoryOk =
+      selectedCategory === "All" ||
+      notice.categories?.name === selectedCategory;
+    const searchOk =
+      searchText === "" ||
+      notice.title.toLowerCase().includes(searchText.toLowerCase()) ||
+      notice.body.toLowerCase().includes(searchText.toLowerCase());
+    return categoryOk && searchOk;
+  });
+
   return (
     <>
       <title>Feed | KASU Notice Board</title>
 
-      <Header />
+      <Header searchText={searchText} setSearchText={setSearchText} />
 
       <main className="page">
+        <FeedCategories
+          categories={categories}
+          setSelectedCategory={setSelectedCategory}
+        />
 
-        <FeedCategories categories={categories} />
-        
         {fetchError && (
           <p>
             We're experiencing some technical issues please refresh the page or
@@ -60,9 +75,13 @@ export function FeedPage() {
             <br />
             Thanks for using KASU notice board
           </p>
-        )}   
+        )}
 
-        <NoticeCard notices={notices} setNotices={setNotices} />
+        <NoticeCard
+          notices={notices}
+          setNotices={setNotices}
+          filteredNotices={visibleNotices}
+        />
       </main>
     </>
   );

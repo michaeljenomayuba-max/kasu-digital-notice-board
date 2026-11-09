@@ -1,23 +1,23 @@
-import dayjs from 'dayjs';
-import { supabase } from '../../assets/lib/supabaseClient';
+import dayjs from "dayjs";
+import { supabase } from "../../assets/lib/supabaseClient";
 import { Link } from "react-router";
-import { updateDelete } from '../../utils';
+import { updateDelete } from "../../utils";
 import EditIcon from "../../assets/images/edit-icon.png";
 import DeleteIcon from "../../assets/images/delete-icon.png";
 
-export function NoticeCard({notices, setNotices}) {
+export function NoticeCard({ notices, setNotices, filteredNotices }) {
   const deletePost = async (noticeId) => {
-    const {data, error} = await supabase
-      .from('notices')
+    const { data, error } = await supabase
+      .from("notices")
       .delete()
-      .eq('id', noticeId)
+      .eq("id", noticeId);
 
-    setNotices(updateDelete(noticeId, notices))
-  }
+    setNotices(updateDelete(noticeId, notices));
+  };
 
   return (
     <div className="notice-list">
-      {notices.map((notice) => {
+      {filteredNotices.map((notice) => {
         return (
           <div key={notice.id} className="notice-card">
             <div className="notice-card-top">
@@ -32,9 +32,14 @@ export function NoticeCard({notices, setNotices}) {
                 <p className="urgent-text">{notice.urgent ? "Urgent" : ""}</p>
               </div>
             </div>
+            {notice.image_url && (
+              <div className="notice-image-div">
+                <img className="notice-image" src={notice.image_url} alt="" />
+              </div>
+            )}
             <p className="notice-text">{notice.body}</p>
             <div className="buttons-container">
-              <Link className="view-more-button" to="/notice">
+              <Link className="view-more-button" to={`/notice/${notice.id}`}>
                 View more
               </Link>
 
@@ -42,8 +47,14 @@ export function NoticeCard({notices, setNotices}) {
                 <Link className="edit-icon-button" to={`/${notice.id}`}>
                   <img className="edit-icon" src={EditIcon} />
                 </Link>
-                
-                <button type='button' className="delete-icon-button" onClick={() => {deletePost(notice.id)}} >
+
+                <button
+                  type="button"
+                  className="delete-icon-button"
+                  onClick={() => {
+                    deletePost(notice.id);
+                  }}
+                >
                   <img className="delete-icon" src={DeleteIcon} />
                 </button>
               </div>
