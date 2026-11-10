@@ -1,5 +1,5 @@
 
-.page {
+.sign-in-page {
   min-height: 100vh;
   display: flex;
   align-items: center;
@@ -14,12 +14,12 @@
   box-shadow: 0 10px 30px rgba(40, 70, 52, 0.12);
   padding: 32px 20px;
 }
-.logo-container {
+.sign-in-logo-container {
   display: flex;
   justify-content: center;
   margin-bottom: 24px;
 }
-.logo {
+.sign-in-logo {
   display: block;
   width: 140px;
   height: auto;
@@ -63,6 +63,10 @@ input:focus {
   font: inherit;
   font-weight: 600;
   cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
 }
 @media (min-width: 576px) {
   .auth-card {

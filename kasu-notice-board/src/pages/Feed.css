@@ -124,10 +124,15 @@
   color: #ffffff;
   font-weight: 600;
   text-decoration: none;
+  cursor: pointer;
 }
 .view-more-button svg {
   width: 18px;
   height: 18px;
+}
+
+.buttons-container{
+  margin-top: auto;
 }
 
 @media (max-width: 575px) {
