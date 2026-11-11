@@ -1,8 +1,17 @@
 import { Link } from 'react-router';
+import { useNavigate } from "react-router";
+import { supabase } from "../assets/lib/supabaseClient";
 import KASULOGO from '../assets/images/kasu-logo.png'
 import './Header.css'
 
 export function Header({searchText, setSearchText, filterNotices}) {
+  const navigate = useNavigate();
+
+  const logOut = async () => {
+    await supabase.auth.signOut();
+    navigate("/admin-sign-in", {replace: true})
+  }
+
   return (
     <header className="header">
       <div className="header-inner">
@@ -19,7 +28,7 @@ export function Header({searchText, setSearchText, filterNotices}) {
             placeholder="Search notices"
             aria-label="Search notices"
           />
-          <button className='log-out-button'>Log Out</button>
+          <button className='log-out-button' onClick={logOut}>Log Out</button>
         </form>
       </div>
     </header>
