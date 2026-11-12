@@ -46,8 +46,17 @@
   flex: 0 0 22px;
   width: 22px;
   height: 22px;
+  min-height: 0;
+  padding: 0;
   margin: 0;
   accent-color: #54735f;
+}
+
+.radio-option input:focus,
+.radio-option input:focus-visible,
+.checkbox-option input:focus,
+.checkbox-option input:focus-visible {
+  outline: none;
 }
 
 .form-group {

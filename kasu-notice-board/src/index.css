@@ -16,6 +16,14 @@ body {
   padding: 20px 16px 40px;
 }
 
+.sign-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px 16px;
+}
+
 .buttons-container{
   display: flex;
   justify-content: space-between;

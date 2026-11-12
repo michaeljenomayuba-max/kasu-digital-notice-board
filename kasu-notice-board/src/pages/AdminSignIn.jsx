@@ -39,7 +39,7 @@ export function AdminSignIn() {
   };
 
   return (
-    <main className="sign-in-page">
+    <main className="sign-page">
       <div className="auth-card">
         <div className="sign-in-logo-container">
           <img className="sign-in-logo" src={KASULOGO} alt="KASU Logo" />

@@ -1,16 +1,20 @@
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Sign Up | KASU Notice Board</title>
-    <link rel="stylesheet" href="styles/student-sign-up.css" />
-  </head>
-  <body>
-    <main class="page">
+import { useState } from "react";
+import { Link } from "react-router";
+import KASULOGO from "../assets/images/kasu-logo.png";
+import "./StudentSignPages.css";
+import "../index.css";
+
+export function StudentSignUp() {
+  const [matricNumber, setMatricNumber] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+
+  return (
+    <main class="sign-page">
       <div class="auth-card">
         <div class="logo-container">
-          <img class="logo" src="images/kasu-logo.png" alt="KASU logo" />
+          <img class="logo" src={KASULOGO} alt="KASU logo" />
         </div>
         <p class="welcome-text">Welcome to the KASU Notice Board</p>
         <h1 class="auth-title">Sign up</h1>
@@ -21,12 +25,21 @@
               type="text"
               id="matric-number"
               name="matric-number"
+              value={matricNumber}
+              onChange={(e) => setMatricNumber(e.target.value)}
               placeholder="KASU/YY/DEPT/NN"
             />
           </div>
           <div class="form-group">
             <label for="email">Email</label>
-            <input type="email" id="email" name="email" placeholder="Email" />
+            <input
+              type="email"
+              id="email"
+              name="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder="Email"
+            />
           </div>
           <div class="form-group">
             <label for="password">Password</label>
@@ -34,6 +47,8 @@
               type="password"
               id="password"
               name="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
               placeholder="Password"
             />
           </div>
@@ -43,15 +58,19 @@
               type="password"
               id="confirm-password"
               name="confirm-password"
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
               placeholder="Confirm password"
             />
           </div>
-          <button class="auth-button" type="submit">Sign up</button>
+          <button class="auth-button" type="submit">
+            Sign up
+          </button>
         </form>
         <p class="auth-switch">
-          Already have an account? <a href="student-sign-in.html">Sign in</a>
+          Already have an account? <Link to="/student-sign-in">Sign in</Link>
         </p>
       </div>
     </main>
-  </body>
-</html>
+  );
+}
