@@ -1,25 +1,59 @@
 import { useState } from "react";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
+import { supabase } from "../assets/lib/supabaseClient";
 import KASULOGO from "../assets/images/kasu-logo.png";
-import './StudentSignPages.css';
+import "./StudentSignPages.css";
 import "../index.css";
 
 export function StudentSignIn() {
-    const [matricNumber, setMatricNumber] = useState("");
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
+  const navigate = useNavigate();
+  const [matricNumber, setMatricNumber] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [errorMessage, setErrorMessage] = useState(null);
+
+  const signIn = async (e) => {
+    e.preventDefault();
+    setErrorMessage(null);
+
+    const { data, error } = await supabase.auth.signInWithPassword({
+      email,
+      password,
+    });
+    
+    if (error) {
+      setErrorMessage("Invalid details. Please check them and try again.");
+      return;
+    }
+
+    const { data: profile } = await supabase
+      .from("profiles")
+      .select()
+      .eq('id', data.user.id)
+      .single();
+
+    const matric = matricNumber.trim().toUpperCase();
+
+    if (profile?.role !== 'student' || profile?.login_number !== matric) {
+      await supabase.auth.signOut();
+      setErrorMessage("Invalid details. Please check them and try again.");
+      return;
+    }
+
+    navigate('/feed', {replace: true});
+  }
 
   return (
-    <main class="sign-page">
-      <div class="auth-card">
-        <div class="logo-container">
-          <img class="logo" src={KASULOGO} alt="KASU logo" />
+    <main className="sign-page">
+      <div className="auth-card">
+        <div className="logo-container">
+          <img className="logo" src={KASULOGO} alt="KASU logo" />
         </div>
-        <p class="welcome-text">Welcome to the KASU Notice Board</p>
-        <h1 class="auth-title">Sign in</h1>
-        <form class="auth-form" action="feed.html">
-          <div class="form-group">
-            <label for="matric-number">Matric number</label>
+        <p className="welcome-text">Welcome to the KASU Notice Board</p>
+        <h1 className="auth-title">Sign in</h1>
+        <form className="auth-form" onSubmit={signIn}>
+          <div className="form-group">
+            <label htmlFor="matric-number">Matric number</label>
             <input
               type="text"
               id="matric-number"
@@ -29,8 +63,8 @@ export function StudentSignIn() {
               placeholder="KASU/YY/DEPT/NN"
             />
           </div>
-          <div class="form-group">
-            <label for="email">Email</label>
+          <div className="form-group">
+            <label htmlFor="email">Email</label>
             <input
               type="email"
               id="email"
@@ -40,8 +74,8 @@ export function StudentSignIn() {
               placeholder="Email"
             />
           </div>
-          <div class="form-group">
-            <label for="password">Password</label>
+          <div className="form-group">
+            <label htmlFor="password">Password</label>
             <input
               type="password"
               id="password"
@@ -51,11 +85,12 @@ export function StudentSignIn() {
               placeholder="Password"
             />
           </div>
-          <button class="auth-button" type="submit">
+          <button className="auth-button" type="submit">
             Sign in
           </button>
         </form>
-        <p class="auth-switch">
+        {errorMessage && <p>{errorMessage}</p>}
+        <p className="auth-switch">
           Don't have an account? <Link to="/student-sign-up">Sign up</Link>
         </p>
       </div>

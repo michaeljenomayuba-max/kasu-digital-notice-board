@@ -46,7 +46,7 @@ export function AdminSignIn() {
         </div>
         <form className="auth-form" onSubmit={signIn}>
           <div className="form-group">
-            <label htmlFor="admin-number">Admin number</label>
+            <label htmlhtmlFor="admin-number">Admin number</label>
             <input
               type="text"
               id="admin-number"
@@ -57,7 +57,7 @@ export function AdminSignIn() {
             />
           </div>
           <div className="form-group">
-            <label htmlFor="email">Email</label>
+            <label htmlhtmlFor="email">Email</label>
             <input
               type="email"
               id="email"
@@ -68,7 +68,7 @@ export function AdminSignIn() {
             />
           </div>
           <div className="form-group">
-            <label htmlFor="password">Password</label>
+            <label htmlhtmlFor="password">Password</label>
             <input
               type="password"
               id="password"

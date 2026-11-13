@@ -104,7 +104,7 @@ export function AdminDashboard() {
             <CreateCategories category={category} setCategory={setCategory} />
 
             <div className="form-group">
-              <label for="notice-title">Notice title</label>
+              <label htmlFor="notice-title">Notice title</label>
               <input
                 type="text"
                 id="notice-title"
@@ -115,7 +115,7 @@ export function AdminDashboard() {
               />
             </div>
             <div className="form-group">
-              <label for="notice-body">Notice body</label>
+              <label htmlFor="notice-body">Notice body</label>
               <textarea
                 id="notice-body"
                 name="notice-body"
@@ -125,7 +125,7 @@ export function AdminDashboard() {
               ></textarea>
             </div>
             <div className="form-group">
-              <label for="notice-image">Upload image</label>
+              <label htmlFor="notice-image">Upload image</label>
               <input
                 type="file"
                 id="notice-image"

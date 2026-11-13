@@ -1,26 +1,69 @@
 import { useState } from "react";
-import { Link } from "react-router";
+import { supabase } from "../assets/lib/supabaseClient";
+import { Link, useNavigate } from "react-router";
 import KASULOGO from "../assets/images/kasu-logo.png";
 import "./StudentSignPages.css";
 import "../index.css";
 
 export function StudentSignUp() {
+  const navigate = useNavigate();
   const [matricNumber, setMatricNumber] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [errorMessage, setErrorMessage] = useState(null);
+
+  const signUp = async (e) => {
+    e.preventDefault();
+    setErrorMessage(null);
+
+    const matric = matricNumber.trim().toUpperCase();
+    const matricPattern = /^KASU\/\d{2}\/[A-Z]{2,4}\/\d{3,5}$/;
+
+    if (!matricPattern.test(matric)) {
+      setErrorMessage(
+        "Please enter your matric number in this format KASU/YY/DEPT/NNNN.",
+      );
+      return;
+    }
+
+    if (password !== confirmPassword) {
+      setErrorMessage("Passwords do not match.");
+      return;
+    }
+
+    const { data, error } = await supabase.auth.signUp({
+      email,
+      password,
+      options: { data: { login_number: matric } },
+    });
+
+    if (error) {
+      setErrorMessage(error.message);
+      return;
+    }
+
+    if (data.session) {
+      navigate("/feed", { replace: true });
+    } else {
+      setErrorMessage(
+        "Account created. Check your email to confirm it, then sign in.",
+      );
+    }
+  };
 
   return (
-    <main class="sign-page">
-      <div class="auth-card">
-        <div class="logo-container">
-          <img class="logo" src={KASULOGO} alt="KASU logo" />
+    <main className="sign-page">
+      <div className="auth-card">
+        <div className="logo-container">
+          <img className="logo" src={KASULOGO} alt="KASU logo" />
         </div>
-        <p class="welcome-text">Welcome to the KASU Notice Board</p>
-        <h1 class="auth-title">Sign up</h1>
-        <form class="auth-form" action="feed.html">
-          <div class="form-group">
-            <label for="matric-number">Matric number</label>
+        <p className="welcome-text">Welcome to the KASU Notice Board</p>
+        <h1 className="auth-title">Sign up</h1>
+        <form className="auth-form" onSubmit={signUp}>
+          {errorMessage && <p>{errorMessage}</p>}
+          <div className="form-group">
+            <label htmlFor="matric-number">Matric number</label>
             <input
               type="text"
               id="matric-number"
@@ -28,10 +71,11 @@ export function StudentSignUp() {
               value={matricNumber}
               onChange={(e) => setMatricNumber(e.target.value)}
               placeholder="KASU/YY/DEPT/NN"
+              required
             />
           </div>
-          <div class="form-group">
-            <label for="email">Email</label>
+          <div className="form-group">
+            <label htmlFor="email">Email</label>
             <input
               type="email"
               id="email"
@@ -39,10 +83,11 @@ export function StudentSignUp() {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="Email"
+              required
             />
           </div>
-          <div class="form-group">
-            <label for="password">Password</label>
+          <div className="form-group">
+            <label htmlFor="password">Password</label>
             <input
               type="password"
               id="password"
@@ -50,10 +95,11 @@ export function StudentSignUp() {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               placeholder="Password"
+              required
             />
           </div>
-          <div class="form-group">
-            <label for="confirm-password">Confirm password</label>
+          <div className="form-group">
+            <label htmlFor="confirm-password">Confirm password</label>
             <input
               type="password"
               id="confirm-password"
@@ -61,13 +107,14 @@ export function StudentSignUp() {
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
               placeholder="Confirm password"
+              required
             />
           </div>
-          <button class="auth-button" type="submit">
+          <button className="auth-button" type="submit">
             Sign up
           </button>
         </form>
-        <p class="auth-switch">
+        <p className="auth-switch">
           Already have an account? <Link to="/student-sign-in">Sign in</Link>
         </p>
       </div>
