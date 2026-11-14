@@ -47,7 +47,7 @@ export function StudentSignIn() {
     <main className="sign-page">
       <div className="auth-card">
         <div className="logo-container">
-          <img className="logo" src={KASULOGO} alt="KASU logo" />
+          <img className="sign-page-logo" src={KASULOGO} alt="KASU logo" />
         </div>
         <p className="welcome-text">Welcome to the KASU Notice Board</p>
         <h1 className="auth-title">Sign in</h1>

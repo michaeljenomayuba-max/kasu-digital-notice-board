@@ -2,10 +2,12 @@ import dayjs from "dayjs";
 import { supabase } from "../../assets/lib/supabaseClient";
 import { Link } from "react-router";
 import { updateDelete } from "../../utils";
+import { useRole } from "../../hook/UseRole";
 import EditIcon from "../../assets/images/edit-icon.png";
 import DeleteIcon from "../../assets/images/delete-icon.png";
 
 export function NoticeCard({ notices, setNotices, filteredNotices }) {
+  const { role } = useRole();
   const deletePost = async (noticeId) => {
     const { data, error } = await supabase
       .from("notices")
@@ -43,21 +45,24 @@ export function NoticeCard({ notices, setNotices, filteredNotices }) {
                 View more
               </Link>
 
-              <div className="update-buttons-container">
-                <Link className="edit-icon-button" to={`/${notice.id}`}>
-                  <img className="edit-icon" src={EditIcon} />
-                </Link>
+              {role === "admin" && (
+                <div className="update-buttons-container">
+                  <Link className="edit-icon-button" to={`/${notice.id}`}>
+                    <img className="edit-icon" src={EditIcon} />
+                  </Link>
 
-                <button
-                  type="button"
-                  className="delete-icon-button"
-                  onClick={() => {
-                    deletePost(notice.id);
-                  }}
-                >
-                  <img className="delete-icon" src={DeleteIcon} />
-                </button>
-              </div>
+                  <button
+                    type="button"
+                    className="delete-icon-button"
+                    onClick={() => {
+                      deletePost(notice.id);
+                    }}
+                  >
+                    <img className="delete-icon" src={DeleteIcon} />
+                  </button>
+                </div>
+              )}
+              
             </div>
           </div>
         );

@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { Navigate } from "react-router";
 import { supabase } from "../assets/lib/supabaseClient";
 
-export function RequireAdmin({children}) {
+export function RequireRole({allow, children}) {
     const [status, setStatus] = useState("checking");
 
     useEffect(() => {
@@ -20,7 +20,7 @@ export function RequireAdmin({children}) {
                 .eq('id', data.session.user.id)
                 .single();
             
-            if (profile?.role === "admin") {
+            if (allow.includes(profile?.role)) {
                 setStatus("allowed");
             }
             else {
@@ -32,7 +32,7 @@ export function RequireAdmin({children}) {
     }, []);
 
     if (status === 'checking') return null;
-    if (status === 'denied') return <Navigate to="/admin-sign-in" replace />
+    if (status === 'denied') return <Navigate to="/student-sign-up" replace />
 
     return children;
 }
