@@ -42,8 +42,38 @@ export function FeedPage() {
 
     fetchNotices();
     fetchCategories();
-  }, []);
 
+    const noticesChannel = supabase
+      .channel("notices-live")
+      .on(
+        "postgres_changes",
+        {
+          event: "*",
+          schema: "public",
+          table: "notices",
+        },
+        () => {
+          fetchNotices();
+        },
+      )
+      .on(
+        "postgres_changes",
+        {
+          event: "*",
+          schema: "public",
+          table: "categories",
+        },
+        () => {
+          fetchCategories();
+          fetchNotices();
+        },
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(noticesChannel);
+    };
+  }, []);
 
   const visibleNotices = notices.filter((notice) => {
     const categoryOk =

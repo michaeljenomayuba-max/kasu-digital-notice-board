@@ -135,6 +135,28 @@
   margin-top: auto;
 }
 
+@keyframes noticeAppear {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.notice-card {
+  animation: noticeAppear 0.3s ease-out;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .notice-card {
+    animation: none;
+  }
+}
+
 @media (max-width: 575px) {
   .view-more-button {
     align-self: stretch;
