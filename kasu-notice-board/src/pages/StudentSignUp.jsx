@@ -35,7 +35,10 @@ export function StudentSignUp() {
     const { data, error } = await supabase.auth.signUp({
       email,
       password,
-      options: { data: { login_number: matric } },
+      options: { 
+        data: { login_number: matric },
+        emailRedirectTo: 'https://kasu-digital-notice-board.vercel.app/student-sign-in',
+      },
     });
 
     if (error) {
