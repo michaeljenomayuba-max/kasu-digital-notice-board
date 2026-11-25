@@ -43,7 +43,7 @@ export function Header({ searchText, setSearchText, filterNotices }) {
             placeholder="Search notices"
             aria-label="Search notices"
           />
-          <button className="log-out-button" onClick={logOut}>
+          <button className="log-out-button" type="button" onClick={logOut}>
             Log Out
           </button>
         </form>
