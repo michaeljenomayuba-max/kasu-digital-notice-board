@@ -51,9 +51,11 @@ export function NoticePage() {
             <p className="notice-category">{notice.categories?.name}</p>
           </div>
           {notice.image_url && (
-            <div className="notice-image-div">
-              <img className="notice-image" src={notice.image_url} alt="" />
-            </div>
+            <Link to={`/image/${notice.id}`}>
+              <div className="notice-image-div">
+                <img className="notice-image" src={notice.image_url} alt="" />
+              </div>
+            </Link>
           )}
           <div className="full-notice-text">
             {notice.body}

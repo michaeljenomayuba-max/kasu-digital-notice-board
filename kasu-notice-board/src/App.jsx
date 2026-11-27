@@ -6,6 +6,7 @@ import { AdminSignIn } from './pages/AdminSignIn';
 import { RequireRole } from './pages/RequireRole';
 import { StudentSignUp } from './pages/StudentSignUp';
 import { StudentSignIn } from './pages/StudentSignIn';
+import { ImagePage } from './pages/ImagePage';
 import './App.css'
 
 function App() {
@@ -19,6 +20,8 @@ function App() {
       <Route path="feed" element={<RequireRole allow={["admin", "student"]}><FeedPage /></RequireRole>} />
 
       <Route path="notice/:noticeId" element={<RequireRole allow={["admin", "student"]}><NoticePage /></RequireRole>} />
+
+      <Route path="image/:noticeId" element={<RequireRole allow={["admin", "student"]}><ImagePage /></RequireRole>} />
 
       <Route path="/:noticeId" element={<RequireRole allow={["admin"]}><AdminDashboard key="edit" /></RequireRole>} />
 
